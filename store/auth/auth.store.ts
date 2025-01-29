@@ -4,7 +4,7 @@ export default function useAuthApi() {
     const {$axios} = useNuxtApp();
 
     const signIn = async (data: LoginPayload) => {
-        const response = await $axios.post('http://localhost:5000/auth/login', data);
+        const response = await $axios.post('/auth/login', data);
         return response.data;
     }
 
