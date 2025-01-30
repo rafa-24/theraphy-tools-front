@@ -212,12 +212,12 @@
 import { ref, onMounted } from "vue";
 import { validatePassword } from "~/helpers/validatePassword";
 import { validatePhoneNumber } from "~/helpers/validateTelephoneNumber";
-import type { UserPatientPayload } from "~/store/user/types/User.interface";
+import type { UserPatientPayload, UserTherapistPayload } from "~/store/user/types/User.interface";
 import useAuthApi from "~/store/user/user.store";
 import { useRouter } from 'vue-router'
 
 
-const { getListCountries, registerUserPatient } = useAuthApi()
+const { getListCountries, registerUserPatient, registerUserTherapist } = useAuthApi()
 const Swal = useNuxtApp().$swal;
 const router = useRouter(); // router vue to redirections
 
@@ -335,14 +335,11 @@ const register = async() => {
           popup: "small-alert",
         },
       });
-
       setTimeout(() => {
         // Redirect to login
         router.push('login');
       }, 2000);
-
     }
-
     Swal.fire({
       position: "top-end",
       icon: "error",
@@ -359,6 +356,114 @@ const register = async() => {
 
   }
 
+  // validate telephoneNumber
+  const isValidTelephoneNumber = validatePhoneNumber(country.value, telephoneNumber.value);
+    if (!isValidTelephoneNumber) {
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: "Register",
+        text: 'the phone number is invalid',
+        showConfirmButton: false,
+        timer: 3000,
+        toast: true,
+        timerProgressBar: true,
+        customClass: {
+          popup: "small-alert",
+        },
+      });
+      return;
+    }
+
+    // validate password
+    const matchPassword = validatePassword(password.value, confirmPassword.value);
+    if (!matchPassword) {
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: "Register",
+        text: 'passwords do not match',
+        showConfirmButton: false,
+        timer: 3000,
+        toast: true,
+        timerProgressBar: true,
+        customClass: {
+          popup: "small-alert",
+        },
+      });
+      return;
+    }
+
+    if (universityDegree.value.trim() === '') {
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: "Register",
+        text: 'you must fill in the professional title field',
+        showConfirmButton: false,
+        timer: 3000,
+        toast: true,
+        timerProgressBar: true,
+        customClass: {
+          popup: "small-alert",
+        },
+      });
+      return;
+    }
+
+
+    // Validate work experience
+    if (workExperience.value <= 0) {
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: "Register",
+        text: 'must have at least one year of experience',
+        showConfirmButton: false,
+        timer: 3000,
+        toast: true,
+        timerProgressBar: true,
+        customClass: {
+          popup: "small-alert",
+        },
+      });
+      return;
+    }
+
+    // build  user therapist
+    const therapist: UserTherapistPayload = {
+      name: name.value,
+      paternalSurname: paternalSurname.value,
+      telephoneNumber: telephoneNumber.value,
+      country: country.value,
+      email: email.value,
+      universityDegree: universityDegree.value,
+      workExperience: workExperience.value,
+      password: password.value
+    }
+
+    const response = await registerUserTherapist(therapist);
+    console.log('response therapist', response);
+
+    if (response.success && response.status === 201) {
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Register",
+        text: `${response.message}`,
+        showConfirmButton: false,
+        timer: 3000,
+        toast: true,
+        timerProgressBar: true,
+        customClass: {
+          popup: "small-alert",
+        },
+      });
+      setTimeout(() => {
+        // Redirect to login
+        router.push('login');
+      }, 2000);
+    }
 
 
   } catch (error) {

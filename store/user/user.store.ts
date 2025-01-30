@@ -9,7 +9,7 @@ export default function useAuthApi() {
     }
 
     const registerUserTherapist = async (data: UserTherapistPayload ) => {
-        const response = await $axios.post('/user/patient/registration', data);
+        const response = await $axios.post('/user/therapist/registration', data);
         return response.data;
     }
 
