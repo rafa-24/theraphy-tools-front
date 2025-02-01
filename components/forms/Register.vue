@@ -340,23 +340,10 @@ const register = async() => {
         router.push('login');
       }, 2000);
     }
-    Swal.fire({
-      position: "top-end",
-      icon: "error",
-      title: "Register",
-      text: `${response.message}`,
-      showConfirmButton: false,
-      timer: 3000,
-      toast: true,
-      timerProgressBar: true,
-      customClass: {
-      popup: "small-alert",
-      },
-    });
-
   }
 
-  // validate telephoneNumber
+  if (props.universityDegree && props.workExperience) {
+      // validate telephoneNumber
   const isValidTelephoneNumber = validatePhoneNumber(country.value, telephoneNumber.value);
     if (!isValidTelephoneNumber) {
       Swal.fire({
@@ -411,7 +398,6 @@ const register = async() => {
       return;
     }
 
-
     // Validate work experience
     if (workExperience.value <= 0) {
       Swal.fire({
@@ -464,6 +450,7 @@ const register = async() => {
         router.push('login');
       }, 2000);
     }
+  }
 
 
   } catch (error) {

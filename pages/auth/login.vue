@@ -59,11 +59,13 @@
               </div>
               <div class="flex items-center justify-between">
                 <div class="flex items-start"></div>
-                <a
+                <NuxtLink to="forget-password">
+                  <a
                   href="#"
                   class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
                   >Olvide mi contraseña?</a
                 >
+                </NuxtLink>
               </div>
               <button
                 type="submit"
@@ -74,11 +76,13 @@
 
               <p class="text-sm font-light text-gray-500 dark:text-gray-400">
                 ¿Aún no tiene una cuenta?
-                <a
+                <NuxtLink to="register">
+                  <a
                   href="#"
                   class="font-medium text-primary-600 hover:underline dark:text-primary-500"
                   >Regístrese</a
                 >
+                </NuxtLink>
               </p>
             </form>
           </div>

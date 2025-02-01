@@ -1,6 +1,6 @@
 <template>
     <div>
-       <Register :university-degree="true" :work-experience="true"/>
+       <Register :university-degree="false" :work-experience="false"/>
     </div>
 </template>
 
